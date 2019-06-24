@@ -24,3 +24,9 @@ type Comment struct {
 	AuthorName string
 	Content string
 }
+
+// session
+type SimpleSession struct {
+	Username string // login name
+	TTL int64 // 判断session是否过期
+}
