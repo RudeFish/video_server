@@ -6,6 +6,11 @@ type UserCredential struct {
 	Pwd string `json:"pwd"`
 }
 
+// Resqonse
+type SignedUp struct {
+	Sucess bool `json:"sucess"`
+	SessionId string `json:"session_id"`
+} 
 
 // data model
 

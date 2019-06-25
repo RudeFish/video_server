@@ -10,7 +10,7 @@ import (
 
 
 // 用户部分
-func AddUSerCredential(loginName string, pwd string) error {
+func AddUserCredential(loginName string, pwd string) error {
 	stmtIns, err := dbConn.Prepare("INSERT INTO users (login_name, pwd) VALUES (?, ?)")
 	if err != nil{
 		return err

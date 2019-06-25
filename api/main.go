@@ -5,6 +5,26 @@ import (
 	"net/http"
 )
 
+
+// 添加middleware
+type middleWareHandler struct {
+	r *httprouter.Router
+}
+
+
+func NewMinddleWareHandler(r *httprouter.Router) http.Handler {
+	m := middleWareHandler{}
+	m.r = r
+	return m
+}
+
+// 将middleWareHandler实现handler方法
+func (m middleWareHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)  {
+	// check session
+	validateUserSession(r)
+	m.r.ServeHTTP(w, r)
+}
+
 func RegisterHanders() *httprouter.Router {
 	router := httprouter.New()
 	// 创建用户
@@ -19,5 +39,6 @@ func RegisterHanders() *httprouter.Router {
 
 func main()  {
 	r := RegisterHanders()
-	http.ListenAndServe(":25600", r)
+	mh := NewMinddleWareHandler(r)
+	http.ListenAndServe(":25600", mh)
 }

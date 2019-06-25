@@ -33,7 +33,7 @@ func TestUserWorkFlow(t *testing.T)  {
 }
 
 func testAddUser(t *testing.T)  {
-	err := AddUSerCredential("silas", "123456")
+	err := AddUserCredential("silas", "123456")
 	if err != nil{
 		t.Errorf("Error of Adduser: %v\n", err)
 	}

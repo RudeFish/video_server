@@ -22,4 +22,13 @@
 
 
 
-这里session只有sync.map保存
+这里session用sync.map保存
+
+流程
+
+
+
+## api前端部分
+
+main->middleware -> defs(message, err)->handlers->dbops->response
+
