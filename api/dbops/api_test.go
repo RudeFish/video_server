@@ -24,10 +24,11 @@ func TestMain(m *testing.M)  {
 	m.Run()
 	clearTables()
 }
-
+// ---------------------------------------------------USER--------------------------------------- //
 func TestUserWorkFlow(t *testing.T)  {
 	t.Run("Add", testAddUser)
 	t.Run("Get", testGetUser)
+	t.Run("GetInfo", testGetUserInfo)
 	t.Run("Del", testDeleteUser)
 	t.Run("Reget", testRegetUser)
 }
@@ -43,6 +44,14 @@ func testGetUser(t *testing.T)  {
 	pwd, err := GetUserCredential("silas")
 	if pwd != "123456" || err != nil{
 		t.Errorf("Error of Getuser")
+	}
+}
+
+func testGetUserInfo(t *testing.T)  {
+	uname := "silas"
+	u, err := GetUser(uname)
+	if u.LoginName != "silas" && u.Pwd != "123456" || err != nil {
+		t.Errorf("Error of testGetUserInfo: %v\n", err)
 	}
 }
 
@@ -65,7 +74,7 @@ func testRegetUser(t *testing.T)  {
 }
 
 
-// video部分测试
+// -----------------------------------------------------video部分测试------------------------------------------ //
 func TestVideoWorkInfo(t *testing.T)  {
 	clearTables()
 	t.Run("PreparUser", testAddUser) // 由于videoInfo里面有用户id
@@ -105,7 +114,7 @@ func testRegetVideoInfo(t *testing.T)  {
 	}
 }
 
-// 评论部分测试
+// -----------------------------------------------评论部分测试--------------------------------------------- //
 func TestComments(t *testing.T)  {
 	clearTables()
 	t.Run("AddUser", testAddUser)

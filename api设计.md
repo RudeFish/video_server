@@ -1,4 +1,4 @@
-# API部分
+# 一、API部分
 
 ## api部分
 
@@ -36,7 +36,7 @@ main->middleware -> defs(message, err)->handlers->dbops->response
 
 
 
-# stream部分
+# 二、stream部分
 
 ## limiter（流控机制
 
@@ -107,4 +107,167 @@ if err := r.ParseMultipartForm(MAX_UPLOAN_SIZE); err != nil{
 ```
 
 > testPageHandler(文件上传页面
+
+# 三、schedule(调度程序
+
+> 作用
+>
+> - 处理延时操作
+>
+> - 处理异步任务
+
+> 结构
+>
+> - ReSTful 的 http server(接收任务写道schedule
+>
+> - Timer(定时器
+> - 生产者/消费者模型下的task runner
+
+
+
+```flow
+flow
+st=>start: Producer/Dispatcher
+op=>operation: channel
+ops=>operation: Consumer/Executor
+st->op->ops
+```
+
+## 1、runner
+
+> runner.go
+>
+> startDispatcher:
+>
+> - control	channel（信息交换
+> - data        channel（数据
+
+## 2、task
+
+- 延时删除
+
+1. api-> cideoid -> mysql // api拿到id存到数据库
+2. dispatcher -> mysql -> videoid ->  datachannel // 拿到id放到channel
+3. executor -> datachannel -> videoid -> delete videos // 删除
+
+## 3、trmain
+
+
+
+## 4、Api
+
+1. user -> api -> delete video
+2. api -> scheduler -> write
+3. timer
+4. timer -> runner -> read -> exec -> delete video from folder
+
+
+
+
+
+# 四、前端服务和模版引擎渲染
+
+1. 转发请求
+
+   两种模式proxy/api
+
+2. 模板渲染
+
+
+
+## web
+
+
+
+## template
+
+
+
+## api透传模块实现
+
+
+
+## proxy转发的实现
+
+有些浏览器或者网站会禁止跨域请求（cross origin resource sharing），这时候会用到proxy进行转发
+
+
+
+# 五、自动化部署脚本
+
+```
+cd .\web
+go build
+copy web.exe D:\work\web.exe
+cd ..
+xcopy .\template D:\work\template /E/I/D/Y
+```
+
+在template中更改了html文件后直接执行次脚本即可，无需重启服务。
+
+# 六、数据库表
+
+## users用户表:
+
+```mysql
+CREATE TABLE `video_server`.`users`  (
+  `id` int unsigned primary key auto_increment,
+  `login_name` varchar(64) unique key,
+  `pwd` text
+);
+```
+
+## video_info视频表:
+
+```go
+CREATE TABLE `video_server`.`video_info`  (
+  `id` varchar(64) NOT NULL,
+  `author_id` int(10) NULL,
+  `name` text NULL,
+  `display_ctime` text NULL,
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
+```
+
+## comments评论表:
+
+```mysql
+CREATE TABLE `video_server`.`comments`  (
+  `id` varchar(64) NOT NULL,
+  `video_id` varchar(64) NULL,
+  `author_id` int(10) NULL,
+  `content` text NULL,
+  `time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
+```
+
+## session会话表:
+
+```mysql
+CREATE TABLE `video_server`.`sessions`  (
+  `session_id` varchar(244) NULL DEFAULT NULL,
+  `TTL` tinytext NULL,
+  `login_name` text NULL,
+  PRIMARY KEY (`session_id`)
+);
+```
+
+## video_del_rec待删除视频表:
+
+```mysql
+CREATE TABLE `video_server`.`video_del_rec`  (
+  `video_id` varchar(64) NOT NULL,
+  PRIMARY KEY (`video_id`)
+);
+```
+
+
+
+
+
+
+
+
 

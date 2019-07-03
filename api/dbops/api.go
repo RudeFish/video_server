@@ -55,6 +55,25 @@ func DeleteUser(loginName string, pwd string) error {
 	return nil
 }
 
+// 跳过用户名获取用户信息
+func GetUser(uname string) (*defs.User, error) {
+	stmtOut, err := dbConn.Prepare("SELECT id, pwd FROM users WHERE login_name = ?")
+	if err != nil{
+		log.Printf("Prepare-获取用户信息失败：%s\n", err)
+		return nil, err
+	}
+	var  pwd string
+	var id int
+	err = stmtOut.QueryRow(uname).Scan(&id, &pwd)
+	if err != nil && err != sql.ErrNoRows {
+		log.Printf("Query-获取用户信息失败：%s\n", err)
+		return nil, err
+	}
+	res := &defs.User{id, uname, pwd}
+	defer stmtOut.Close()
+	return res, nil
+}
+
 
 // 视频部分
 // 添加视频

@@ -6,6 +6,19 @@ type UserCredential struct {
 	Pwd string `json:"pwd"`
 }
 
+// 用户信息
+type UserInfo struct {
+	Id int `json:"id"`
+	Name string `json:"name"`
+}
+
+// 用户
+type User struct {
+	Id int
+	LoginName string
+	Pwd string
+}
+
 // Resqonse
 type SignedUp struct {
 	Sucess bool `json:"sucess"`
@@ -35,3 +48,4 @@ type SimpleSession struct {
 	Username string // login name
 	TTL int64 // 判断session是否过期
 }
+
